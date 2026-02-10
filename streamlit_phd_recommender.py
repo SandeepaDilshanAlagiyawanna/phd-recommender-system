@@ -73,11 +73,22 @@ def keyword_overlap_score(query, text):
     return len(query_words & text_words) / len(query_words)
 
 
-def recency_score(post_date):
-    if pd.isna(post_date):
-        return 0
-    days_old = (datetime.now() - post_date).days
-    return max(0, 1 - days_old / 365)  # newer posts score higher
+def compute_recency_scores(df):
+    if "post_date" not in df.columns:
+        df["recency_score"] = 0
+        return df
+
+    max_date = df["post_date"].max()
+
+    def recency(post_date):
+        if pd.isna(post_date):
+            return 0
+        days_diff = (max_date - post_date).days
+        return max(0, 1 - days_diff / 365)
+
+    df["recency_score"] = df["post_date"].apply(recency)
+    return df
+
 
 
 # -----------------------------
@@ -102,10 +113,7 @@ def recommend(query, model, embeddings, df, top_k=5, bert_w=0.7, kw_w=0.2, rec_w
         keyword_overlap_score(query, text) for text in combined_text
     ]
 
-    if "post_date" in df_temp.columns:
-        df_temp["recency_score"] = df_temp["post_date"].apply(recency_score)
-    else:
-        df_temp["recency_score"] = 0
+    df_temp = compute_recency_scores(df_temp)
 
     # Final hybrid score with customizable weights
     df_temp["final_score"] = (
