@@ -1,15 +1,16 @@
-## 🎓 AI-Based PhD Opportunity Recommendation System
+## 🎓 Hybrid Neural PhD Opportunity Recommendation System
 
-### (Using NLP + Collaborative Filtering Concepts)
+This project implements a **modern AI-driven recommender system** that suggests
+**relevant UK PhD studentships** based on a user’s **research interests**.
 
-This project implements an **AI-driven recommender system** that suggests **relevant UK PhD studentships** based on a user’s **research interests**.
+Unlike traditional recommenders that rely only on **collaborative filtering**,
+this system adopts a **hybrid neural recommendation architecture** combining:
 
-The system combines:
+* **Transformer-based semantic understanding (Sentence-BERT)**
+* **Content-based similarity retrieval**
+* **Hybrid re-ranking inspired by learning-to-rank recommender pipelines**
 
-* **Semantic text understanding using Sentence-BERT**
-* **Similarity ranking inspired by Collaborative Filtering principles**
-
-to produce **personalized PhD recommendations**.
+to generate **personalized and explainable PhD recommendations**.
 
 ---
 
@@ -17,7 +18,7 @@ to produce **personalized PhD recommendations**.
 
 **File name:** `data.csv`
 
-The dataset contains real UK PhD studentship opportunities scraped from:
+Source:
 
 ```
 https://www.kaggle.com/datasets/xiangyiz/uk-phd-studentship
@@ -32,55 +33,71 @@ https://www.kaggle.com/datasets/xiangyiz/uk-phd-studentship
 * **location** – City of the position
 * **post_date** – Date posted
 * **close_date** – Application deadline
-* **url** – Link to apply
+* **url** – Direct application link
 
 ---
 
-## 🧠 Recommender System Approach
+## 🧠 Recommender System Architecture
 
-This project follows a **content-based recommendation pipeline** enhanced with
-**Collaborative Filtering intuition**.
+This project follows a **two-stage hybrid neural recommendation pipeline**
+commonly used in **modern industrial recommender systems**.
 
-### Step 1 — Text Representation
+### Stage 1 — Neural Content-Based Retrieval
 
-Relevant text fields (title, department, employer) are merged into a single description.
-
-### Step 2 — Semantic Embedding
-
-Descriptions are converted into numerical vectors using:
+* Text fields (**title, department, employer**) are merged into a single description.
+* Descriptions are encoded into **semantic embeddings** using:
 
 ```
 Sentence-BERT (all-MiniLM-L6-v2)
 ```
 
-### Step 3 — Similarity Matching
+* The user query is embedded and matched via **cosine similarity**
+  to retrieve the **top candidate PhD opportunities**.
 
-The user’s research query is embedded and compared with all PhD vectors using:
+This stage represents a **neural content-based recommender**,
+capable of understanding **semantic meaning beyond keywords**.
+
+---
+
+### Stage 2 — Hybrid Re-Ranking (Learning-to-Rank Inspired)
+
+Retrieved candidates are refined using a **hybrid scoring mechanism**:
+
+* **Neural semantic similarity (BERT score)**
+* **Keyword overlap relevance**
+* **Recency of posting**
+
+Final ranking score:
 
 ```
-Cosine similarity
+final_score =
+  0.7 × BERT similarity
++ 0.2 × keyword relevance
++ 0.1 × recency score
 ```
 
-### Step 4 — Ranking (Collaborative Filtering Insight)
+This **retrieval → re-ranking architecture** reflects the design used in:
 
-Opportunities with the **highest similarity scores** are ranked and returned,
-mirroring the **core idea of collaborative filtering**:
+* Search engines
+* Industrial recommender systems
+* Modern recommender-system research
 
-> *Items similar to user preferences are recommended.*
+and moves **beyond traditional collaborative filtering**.
 
 ---
 
 ## ⚙️ Technologies Used
 
 * **Python**
-* **Streamlit** – Web interface
-* **pandas** – Data processing
-* **sentence-transformers** – BERT embeddings
-* **scikit-learn** – Similarity computation
+* **Streamlit** – Interactive web interface
+* **pandas** – Data preprocessing
+* **sentence-transformers** – Transformer embeddings
+* **scikit-learn** – Cosine similarity computation
+* **Plotly** – Interactive visualization
 
 ---
 
-## ▶️ How to Run Locally
+## ▶️ Running the Application Locally
 
 ### 1. Install dependencies
 
@@ -88,13 +105,15 @@ mirroring the **core idea of collaborative filtering**:
 pip install -r requirements.txt
 ```
 
-### 2. Ensure dataset exists
+### 2. Place dataset
+
+Ensure the dataset file exists as:
 
 ```
 data.csv
 ```
 
-### 3. Run Streamlit app
+### 3. Launch Streamlit app
 
 ```bash
 streamlit run streamlit_phd_recommender.py
@@ -102,41 +121,48 @@ streamlit run streamlit_phd_recommender.py
 
 ---
 
-## 🌐 Live Deployment
+## 🌐 Deployment
 
-The application can be deployed on:
+The application can be deployed using:
 
-* **GitHub** (code hosting)
-* **Streamlit Cloud** (public web app)
+* **GitHub** – Source code hosting
+* **Streamlit Cloud** – Public interactive web application
 
-After deployment, users can:
+Users can:
 
 * Enter research interests
-* Receive **ranked PhD recommendations**
+* View **ranked PhD recommendations**
+* Analyze **match scores and statistics**
 * Access **direct application links**
 
 ---
 
-## 🎯 Project Contribution
+## 🎯 Key Contributions
 
 This project demonstrates:
 
-* Practical use of **NLP in recommender systems**
-* Application of **semantic similarity with BERT**
-* Recommendation logic aligned with
-  **Collaborative Filtering principles used in modern AI systems**
+* Application of **transformer-based NLP in recommender systems**
+* Design of a **hybrid neural retrieval + re-ranking pipeline**
+* Implementation of **explainable recommendation scoring**
+* Practical deployment of an **interactive AI recommender web app**
 
 Suitable for:
 
 * **Machine Learning coursework**
 * **Recommender Systems modules**
-* **Final-year undergraduate projects**
+* **Final-year undergraduate AI projects**
 
 ---
 
 ## 🔮 Future Work
 
-* Add **true hybrid collaborative filtering** with user interaction history
-* Implement **advanced ranking models**
-* Provide **filters for salary, location, and deadline**
-* Enable **automatic dataset updates**
+* Integrate **true collaborative filtering** using user interaction history
+* Apply **learning-to-rank neural models**
+* Add **context-aware or conversational recommendation (RAG-based)**
+* Enable **automatic dataset updates from jobs.ac.uk**
+
+---
+
+## 📜 License
+
+This project is developed for **academic and educational purposes**.
