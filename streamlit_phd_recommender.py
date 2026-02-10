@@ -98,7 +98,14 @@ query = st.text_input(
 # -----------------------------
 # Explanation section button
 # -----------------------------
+# Initialize session state for toggle
+if "show_explanation" not in st.session_state:
+    st.session_state.show_explanation = False
+
 if st.button("ℹ️ Show How This Recommender Works"):
+    st.session_state.show_explanation = not st.session_state.show_explanation
+
+if st.session_state.show_explanation:
     st.subheader("How the Recommendation System Works")
 
     st.markdown(
@@ -121,11 +128,6 @@ The PhD positions with the **highest similarity scores** are ranked and returned
 following the **core intuition of collaborative filtering**:
 
 > Recommend items that are most similar to the user’s preferences.
-
----
-
-✅ This makes the project a **content‑based recommender system enhanced with
-collaborative filtering principles**, commonly used in modern AI applications.
         """
     )
 
