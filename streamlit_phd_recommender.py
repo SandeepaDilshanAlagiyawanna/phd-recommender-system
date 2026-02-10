@@ -95,6 +95,44 @@ query = st.text_input(
 )
 
 
+# -----------------------------
+# Explanation section button
+# -----------------------------
+if st.button("ℹ️ Show How This Recommender Works"):
+    st.subheader("How the Recommendation System Works")
+
+    st.markdown(
+        """
+### 1️⃣ Text Processing
+The system combines **PhD title, department, and university** into a single text description.
+
+### 2️⃣ Semantic Embedding (BERT)
+Each description is converted into a **numerical vector** using the
+**Sentence‑BERT model (`all-MiniLM-L6-v2`)**.
+
+This allows the system to understand **meaning**, not just keywords.
+
+### 3️⃣ Similarity Matching
+Your research interest is also converted into a vector, and the system
+computes **cosine similarity** between your query and every PhD opportunity.
+
+### 4️⃣ Ranking (Collaborative Filtering Insight)
+The PhD positions with the **highest similarity scores** are ranked and returned,
+following the **core intuition of collaborative filtering**:
+
+> Recommend items that are most similar to the user’s preferences.
+
+---
+
+✅ This makes the project a **content‑based recommender system enhanced with
+collaborative filtering principles**, commonly used in modern AI applications.
+        """
+    )
+
+
+# -----------------------------
+# Recommendation results
+# -----------------------------
 if st.button("Find PhD Opportunities") and query:
     results = recommend(query, model, embeddings, df, top_k)
 
@@ -112,6 +150,4 @@ if st.button("Find PhD Opportunities") and query:
             st.divider()
 
 else:
-    st.info(
-        "Enter a research topic and click **Find PhD Opportunities** to see recommendations."
-    )
+    st.info("Enter a research topic and click **Find PhD Opportunities** to see recommendations.")
